@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+  namespace: flask-mongo-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+      - name: flask-app
+        image: arcgupta148/flask-app:latest_v1  # Your Docker Hub image
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGO_HOST
+          value: "mongodb-service"
+        - name: MONGO_PORT
+          value: "27017"

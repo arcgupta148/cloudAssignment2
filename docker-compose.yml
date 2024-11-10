@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  flask-app:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # Only specify platform if absolutely necessary
+      
+    ports:
+      - "5001:5000"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_HOST=mongodb  # This should match the MongoDB service name
+      - MONGO_PORT=27017
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
+    driver: local
